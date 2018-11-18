@@ -1,0 +1,35 @@
+/**
+ * 대출/반납 처리하는 Class.
+ *
+ * @author (Team 4)
+ * @version (2017/12/08)
+ */
+public class LoanOperation
+{
+    private Borrower borrower;
+    private Book book;
+
+    public LoanOperation(Borrower borrower, Book book)
+    {
+        this.borrower = borrower;
+        this.book = book;
+        if(book.checkBook())
+        {
+            borrower.linkBook(this);
+            book.linkBorrower(this);
+        }
+        else
+        {
+            borrower = null;
+            book = null;
+        }
+    }
+    
+    public void returnB()
+    {
+        borrower.unlinkBook(this);
+        book.unlinkBorrower(this);
+        borrower = null;
+        book = null;
+    }
+}

@@ -1,0 +1,57 @@
+import java.util.*;
+import java.util.LinkedList;
+/**
+ * 도서관의 이용자들을 관리하는 Class
+ *
+ * @author (Team 4)
+ * @version (2017/12/08)
+ */
+public class Borrower implements Comparable 
+{
+    private String name;
+    private LinkedList <LoanOperation> linkToBooks;
+
+    public Borrower(String name)
+    {
+        this.name = name;
+        linkToBooks = new LinkedList<LoanOperation>(); // LinkedList에서 LoanOperation 객체 생성 
+    }
+    
+    public int compareTo(Object obj)
+    {
+        Borrower borrower = (Borrower)obj;
+        String borrowerName = borrower.getName();
+        return name.compareTo(borrowerName);
+    }
+    
+    public boolean equals(Object obj)
+    {
+        return this.compareTo(obj) == 0;
+    }
+    
+    public int hashCode()
+    {
+        return name.hashCode(); //Hash Code 반환 
+    }
+    
+    public void linkBook(LoanOperation loan)
+    {
+        linkToBooks.add(loan); //LinkedList에 LoanOperation 객체를 추가한다 
+    }
+    
+    public void unlinkBook(LoanOperation loan)
+    {
+        linkToBooks.remove(loan); //LinkedList에서 LoanOperation 객체를 치운다 
+    }
+    
+    public String getName()
+	{
+		return name;
+	}
+	
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+}

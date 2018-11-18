@@ -1,0 +1,96 @@
+import java.util.*;
+/**
+ * 도서관 시스템 관리 Test Class.
+ *
+ * @author (Team 4)
+ * @version (2017/12/08)
+ */
+public class LibraryTest
+{
+    public static void main(String[] args)
+    {
+        Scanner input = new Scanner(System.in);
+        String select = "";
+        Library library = new Library("Library Application");
+        System.out.println(library.getName());
+        do
+        {
+            select = displayMenu();
+            if (select.equals("0"))
+            {
+                System.out.println("\n" + "End the program.");
+            }
+            else if (select.equals("1"))
+            {
+                System.out.print("\n" + "Enter a new user name : ");
+                String newBorrowerName = input.nextLine();
+
+                library.registerNewBorrower(newBorrowerName);
+            }
+            else if (select.equals("2"))
+            {
+                System.out.print("\n" + "Enter the book title : ");
+                String Title = input.nextLine();
+
+                System.out.print("\n" + "Enter the book author's name : ");
+                String Author = input.nextLine();
+
+                System.out.print("\n" + "Enter a new book catalogue number : ");
+                int CatalogNumber = input.nextInt();
+                input.nextLine();
+
+                library.registerNewBook(Title, Author, CatalogNumber);
+            }
+            else if (select.equals("3"))
+            {
+                library.displayBooksAvailableForLoan();
+            }
+            else if (select.equals("4"))
+            {
+                library.displayLoanedBooks();
+            }
+            else if (select.equals("5"))
+            {
+                System.out.print("\n" + "Enter the user name : ");
+                String name = input.nextLine();
+
+                System.out.print("\n" + "Enter the book catalogue number to complete the loan : ");
+                int catalogNumber = input.nextInt();
+                input.nextLine();
+
+                Book book = library.borrowBook(name, catalogNumber);
+
+                
+            }
+            else if (select.equals("6"))
+            {
+                System.out.print("\n" + "Enter the book catalogue number to complete the return : ");
+                int catalogNumber = input.nextInt();
+                input.nextLine();
+
+                library.returnBook(catalogNumber);
+            }
+            else
+            {
+                System.out.println("\n" + "You entered a wrong number!!!. Try again with a valid number.");
+            }
+            System.out.println();
+        } while (!select.equals("0"));
+    }
+
+    public static String displayMenu()
+    {
+        System.out.println("0 : End the program.");
+        System.out.println("1 : Register a new borrower");
+        System.out.println("2 : Register a new book");
+        System.out.println("3 : Display available books for loan");
+        System.out.println("4 : Display loaned books");
+        System.out.println("5 : Borrow a book");
+        System.out.println("6 : Return a book");
+        System.out.print("Select a number: ");
+        Scanner input = new Scanner(System.in);
+        return input.next();
+    }
+
+}
+

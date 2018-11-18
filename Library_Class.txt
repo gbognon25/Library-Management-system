@@ -1,0 +1,141 @@
+import java.util.TreeSet;
+import java.util.HashSet;
+import java.util.*;
+/**
+ * 도서관 시스템 관리 Class.
+ *
+ * @author (Team 4)
+ * @version (2017/12/08)
+ */
+public class Library
+{
+    private String name;
+    private TreeSet <Book> registeredBooks; 
+    private HashSet <Borrower> registeredBorrowers;
+
+    public Library(String name)
+    {
+        this.name = name;
+        registeredBooks = new TreeSet<Book>(); // TreeSet에서 Book 객체 생성 
+        registeredBorrowers = new HashSet <Borrower>();// HashSet에서 Borrower 객체 생성 
+    }
+
+    public void displayBooksAvailableForLoan()
+    {
+        Iterator iter = registeredBooks.iterator();
+        System.out.println("\n" + "***Books available for loan***");
+
+        while(iter.hasNext() == true)
+        {
+            Book b = (Book)iter.next();
+            if(b.getBorrower() == null)
+            {
+                b.display();
+            }
+        }
+    }
+
+    public void displayLoanedBooks()
+    {
+        Iterator iter = registeredBooks.iterator();
+        System.out.println("\n" + "***Books not available for loan***");
+
+        while(iter.hasNext() == true)
+        {
+            Book b = (Book)iter.next();
+            if(b.getBorrower() != null)
+            {
+                b.display();
+            }
+        }
+    }
+
+    public Book borrowBook(String name,int catalogNumber)
+    {
+        Borrower borrower = this.findBorrower(name);
+        Book book = this.findBook(catalogNumber);
+
+        if(book!=null && borrower != null && book.checkBook())
+        {
+            LoanOperation loan = new LoanOperation(borrower, book);
+            System.out.println("Successful Loan!!! Book title: " + book.getTitle() + " --->" + "Borrower name: " + borrower.getName());
+        }
+        else if (book == null)
+        {
+            System.out.println("Cannot find this book.");
+        }
+        else if (borrower == null)
+        {
+            System.out.println("Cannot find this user.");
+            book = null;
+        }
+        return book;
+    }
+
+    public void returnBook(int catalogNumber)
+    {
+        Book book = this.findBook(catalogNumber);
+        LoanOperation loan = book.getBorrower();
+        loan.returnB();
+        System.out.println("Successful Return!!! Book title: " + book.getTitle());
+    }
+
+    public void registerNewBorrower(String name)
+    {
+        Borrower borrower = new Borrower(name);
+        registeredBorrowers.add(borrower); //HashSet에 Borrower 객체를 추가한다 
+    }
+
+    public void registerNewBook(String title, String author, int catalogNumber)
+    {
+        Book book = new Book(title, author, catalogNumber);
+        registeredBooks.add(book); //TreeSet에 Book 객체를 축가한다 
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public Book findBook(int catalogNumber)
+    {
+        Book findBook = null;
+        Iterator iter = registeredBooks.iterator();
+
+        while(iter.hasNext())
+        {
+            Book book = (Book)iter.next();
+            int bookCatalogueNumber = book.getCatalogueNumber();
+            if(bookCatalogueNumber == catalogNumber)
+            {
+                findBook = book;
+                break;
+            }
+        }
+        return findBook;
+    }
+
+    public Borrower findBorrower(String name)
+    {
+        Borrower findBorrower = null;
+        Iterator iter = registeredBorrowers.iterator();
+
+        while(iter.hasNext())
+        {
+            Borrower borrower = (Borrower)iter.next();
+            String borrowerName = borrower.getName();
+            if(borrowerName.equals(name))
+            {
+                findBorrower = borrower;
+                break;
+            }
+        }
+        return findBorrower;
+    }
+
+}
